@@ -2,8 +2,8 @@
 declare(strict_types=1);
 session_start();
 
-$validCurrencies = ["usd" => "$", "eur" => "€", "bgn" => "lv."];
-$validPeriods = [6, 12, 24, 60];
+$validCurrencies = ["USD" => "$", "EUR" => "€", "BGN" => "lv."];
+$validPeriods = [6 => "6 months", 12 => "1 Year", 24 => "2 Years", 60 => "5 Years"];
 
 if (isset($_GET["submit"])) {
     
@@ -14,7 +14,7 @@ if (isset($_GET["submit"])) {
         throw new Exception("Invalid amount to calculate");
     }
 
-    $currency = strtolower($_GET["currency"]);
+    $currency = $_GET["currency"];
     if(!array_key_exists($currency, $validCurrencies)) {
         throw new Exception("Currency not supported");
     }
@@ -25,7 +25,7 @@ if (isset($_GET["submit"])) {
     }
 
     $period = filter_var($_GET["period"], FILTER_VALIDATE_INT);
-    if ($period === false || !in_array($period, $validPeriods)) {
+    if ($period === false || !array_key_exists($period, $validPeriods)) {
         throw new Exception("Invalid period");
     }
 

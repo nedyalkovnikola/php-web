@@ -8,12 +8,10 @@
         <input id="amount" type="number" step="1" min="0" name="amount" required >
     </div>
     <div>
-        <input id="usd" type="radio" name="currency" value="usd" checked>
-        <label for="usd">USD</label>
-        <input id="eur" type="radio" name="currency" value="eur">
-        <label for="eur">EUR</label>
-        <input id="bgn" type="radio" name="currency" value="bgn">
-        <label for="bgn">BGN</label>
+    <?php foreach ($validCurrencies as $currencyKey => $currencySign) : ?>
+        <input id="<?=strtolower($currencyKey);?>" type="radio" name="currency" value="<?=$currencyKey;?>" required>
+        <label for="<?=strtolower($currencyKey);?>"><?= $currencyKey;?></label>
+    <?php endforeach; ?>
     </div>
     <div>
         <label for="interest">Compound Interest Amount: </label>
@@ -21,12 +19,10 @@
     </div>
     <div>
         <select name="period">
-            <option value="6">6 Months</option>
-            <option value="12">1 Year</option>
-            <option value="24">2 Years</option>
-            <option value="60">5 Years</option>
+        <?php foreach ($validPeriods as $validPeriod => $userValue): ?>
+            <option value="<?= $validPeriod;?>"><?=$userValue;?></option>
+        <?php endforeach; ?>
         </select>
-    
         <input type="submit" name="submit" value="Calculate" />
     </div>
 </form>
