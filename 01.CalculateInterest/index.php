@@ -1,12 +1,13 @@
 <?php
 declare(strict_types=1);
+session_start();
 
-define("CURRENCIES", ["usd" => "$", "eur" => "€", "bng" => "lv."]);
-define("PERIODS", [6, 12, 24, 60]);
+$validCurrencies = ["usd" => "$", "eur" => "€", "bgn" => "lv."];
+$validPeriods = [6, 12, 24, 60];
 
-if (isset($_GET['submit'])) {
+if (isset($_GET["submit"])) {
     
-    array_map('trim', $_GET);
+    array_map("trim", $_GET);
 
     $amount = filter_var($_GET["amount"], FILTER_VALIDATE_INT);
     if ($amount === false || $amount <= 0) {
@@ -14,7 +15,7 @@ if (isset($_GET['submit'])) {
     }
 
     $currency = strtolower($_GET["currency"]);
-    if(!array_key_exists($currency, CURRENCIES)) {
+    if(!array_key_exists($currency, $validCurrencies)) {
         throw new Exception("Currency not supported");
     }
 
@@ -24,17 +25,28 @@ if (isset($_GET['submit'])) {
     }
 
     $period = $_GET["period"];
-    if (!in_array($period, PERIODS)) {
+    if (!in_array($period, $validPeriods)) {
         throw new Exception("Invalid period");
     }
 
     $amount = intval($amount);
-    $currency = CURRENCIES[$currency];
+    $currency = $validCurrencies[$currency];
     $interest = intval($interest);
     $period = intval($period);
+
+    $compoundInterest = calculateInterest($amount, $interest, $period);
+    $compoundInterest = number_format($compoundInterest, 2, ".", " "); 
+
 }
 
+function calculateInterest(int $amount, int $interest, int $period): float
+    {
+        $monthlyInterest = $interest / 12;
+        for ($month = 0; $month < $period; $month++) {
+            $amount = ($amount * (100 + $monthlyInterest)) / 100;
+        }
 
-
+        return $amount;
+    }
 
 require_once 'view.php';

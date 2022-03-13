@@ -1,8 +1,8 @@
-<?php if (isset($compoundInterest, $currency)) {
-    echo "{$currency} {$compoundInterest}";
- } ?>
+<?php if (isset($compoundInterest, $currency)) : ?>
+    <h3><?= "{$currency} {$compoundInterest}"; ?></h3>
+ <?php endif; ?>
 <hr>
-<form action="">
+<form>
     <div>
         <label for="amount">Enter Amount: </label>
         <input id="amount" type="number" step="1" min="0" name="amount" required >
