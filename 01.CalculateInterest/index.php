@@ -24,13 +24,13 @@ if (isset($_GET["submit"])) {
         throw new Exception("Invalid interest");
     }
 
-    $period = $_GET["period"];
-    if (!in_array($period, $validPeriods)) {
+    $period = filter_var($_GET["period"], FILTER_VALIDATE_INT);
+    if ($period === false || !in_array($period, $validPeriods)) {
         throw new Exception("Invalid period");
     }
 
     $amount = intval($amount);
-    $currency = $validCurrencies[$currency];
+    $currencySign = $validCurrencies[$currency];
     $interest = intval($interest);
     $period = intval($period);
 

@@ -1,5 +1,5 @@
-<?php if (isset($compoundInterest, $currency)) : ?>
-    <h3><?= "{$currency} {$compoundInterest}"; ?></h3>
+<?php if (isset($compoundInterest, $currencySign)) : ?>
+    <h3><?= "{$currencySign} {$compoundInterest}"; ?></h3>
  <?php endif; ?>
 <hr>
 <form>
