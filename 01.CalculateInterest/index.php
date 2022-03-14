@@ -1,6 +1,5 @@
 <?php
 declare(strict_types=1);
-session_start();
 
 $validCurrencies = ["USD" => "$", "EUR" => "€", "BGN" => "lv."];
 $validPeriods = [6 => "6 months", 12 => "1 Year", 24 => "2 Years", 60 => "5 Years"];

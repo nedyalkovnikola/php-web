@@ -2,7 +2,7 @@
     <h3><?= "{$currencySign} {$compoundInterest}"; ?></h3>
  <?php endif; ?>
 <hr>
-<form>
+<form method="GET">
     <div>
         <label for="amount">Enter Amount: </label>
         <input id="amount" type="number" step="1" min="0" name="amount" value="<?=$amount;?>" required >
