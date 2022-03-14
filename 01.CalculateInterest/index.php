@@ -5,6 +5,10 @@ session_start();
 $validCurrencies = ["USD" => "$", "EUR" => "€", "BGN" => "lv."];
 $validPeriods = [6 => "6 months", 12 => "1 Year", 24 => "2 Years", 60 => "5 Years"];
 
+$amount = "";
+$interest = "";
+$currency = "";
+
 if (isset($_GET["submit"])) {
     
     array_map("trim", $_GET);

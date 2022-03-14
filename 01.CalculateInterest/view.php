@@ -5,17 +5,17 @@
 <form>
     <div>
         <label for="amount">Enter Amount: </label>
-        <input id="amount" type="number" step="1" min="0" name="amount" required >
+        <input id="amount" type="number" step="1" min="0" name="amount" value="<?=$amount;?>" required >
     </div>
     <div>
     <?php foreach ($validCurrencies as $currencyKey => $currencySign) : ?>
-        <input id="<?=strtolower($currencyKey);?>" type="radio" name="currency" value="<?=$currencyKey;?>" required>
-        <label for="<?=strtolower($currencyKey);?>"><?= $currencyKey;?></label>
+        <input type="radio" name="currency" <?= ($currency == $currencyKey) ? 'checked' : '';?> value="<?=$currencyKey;?>" required>
+        <label><?= $currencyKey;?></label>
     <?php endforeach; ?>
     </div>
     <div>
         <label for="interest">Compound Interest Amount: </label>
-        <input id="interest" type="number" step="1" min="0" name="interest" required>
+        <input id="interest" type="number" step="1" min="0" name="interest" value="<?=$interest; ?>" required>
     </div>
     <div>
         <select name="period">
