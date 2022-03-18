@@ -39,6 +39,7 @@
             </table>
             <div>
                 <input type="submit" name="add" value="Add student">
-            </div>
-            
+            </div> 
         </form>
+    </body>
+</html>
