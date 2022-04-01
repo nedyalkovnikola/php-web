@@ -5,16 +5,12 @@ require_once 'UserLifecycle.php';
 $userLifecycle = new UserLifecycle();
 
 try {
-    if($userLifecycle->login($_POST, $_SESSION)) {
+    $result = $userLifecycle->deleteUser($_SESSION['delete_user']);
+    if ($result) {
         header("Location: profile.php");
-        exit;
+        exit;   
     }
-} catch (\Exception $e) {
+} catch (Exception $e) {
     echo "Error: " . $e->getMessage();
 }
-
-
-
-
-
 

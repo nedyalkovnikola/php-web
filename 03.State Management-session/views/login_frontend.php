@@ -1,7 +1,4 @@
-<?php
-    session_start();
-?>
-<form method="POST" action="login.php">
+<form method="POST">
     <div>
         <label>Username:</label>
         <input type="text" name="username">

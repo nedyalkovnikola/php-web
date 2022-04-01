@@ -8,10 +8,6 @@
         <input type="password" name="password" value="<?= $userLifecycle->getPassword($_SESSION['user']); ?>">
     </div>
     <div>
-        <label>Confirm:</label>
-        <input type="password" name="confirm">
-    </div>
-    <div>
         <label>Email:</label>
         <input type="email" name="email" value="<?= $userLifecycle->getEmail($_SESSION['user']); ?>">
     </div>
@@ -21,3 +17,6 @@
     </div>
     <input type="submit" name="edit" value="Edit">
 </form>
+<div>
+    <a href="profile.php">Go Back</a>
+</div>

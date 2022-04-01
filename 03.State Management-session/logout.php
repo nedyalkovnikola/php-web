@@ -2,5 +2,5 @@
 session_start();
 session_destroy();
 
-header('Location: login_frontend.php');
+header('Location: login.php');
 exit;
