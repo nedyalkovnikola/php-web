@@ -119,10 +119,9 @@ class UserLifecycle
 
         $userInfo['user'] = $newUser;
 
-        // To persist the new changes we have to convert the array code (the variable declaration and its value) to text 
         $usersAsText = var_export($this->data, true);       // convert the array value to a string
-        $declaration = '<?php' . PHP_EOL . '$users = ' . $usersAsText . ';';    // concatenate the string to a string representing variable declaration 
-        $result = file_put_contents('db/database.php', $declaration);              // save in database.php as text again and override the old text
+        $declaration = '<?php' . PHP_EOL . '$users = ' . $usersAsText . ';';    // concatenate to a string representing variable declaration 
+        $result = file_put_contents('db/database.php', $declaration);              // save in database.php as text again and override the old one
 
         return $result !== false;
     }
