@@ -198,4 +198,5 @@ class UserLifecycle
         
         return $remainingDays;
     }
+    
 }
