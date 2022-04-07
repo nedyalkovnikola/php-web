@@ -10,10 +10,7 @@ class UserLifecycle
         $this->data = $users;
     }
 
-    /**
-     * @param string $username
-     * @return string $password
-     */
+
     public function getPassword(string $username): string
     {
         return $this->data[$username]['password'];
@@ -44,6 +41,11 @@ class UserLifecycle
         return $this->data;
     }
 
+    /**
+     * @param string $username
+     * @return bool
+     * @throws Exception
+     */
     public function deleteUser(string $username): bool 
     {
         if ($this->data[$username]['role'] == 'admin') {
@@ -85,7 +87,7 @@ class UserLifecycle
 
 
     /**
-     * @param string $username      The old username kept in $_SESSION['user']
+     * @param string $username      The old username
      * @param array $data           The posted new data
      * @param array $userInfo       Referent information with user info e.g. session
      * @return bool                 Whether the saving succeeded
