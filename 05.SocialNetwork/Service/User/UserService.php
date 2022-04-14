@@ -9,6 +9,7 @@ use Data\Cities\City;
 use Data\Countries\Country;
 use Data\Genders\Gender;
 use Data\Users\UserRegisterViewData;
+use Data\Users\User;
 use Service\Encryption\EncryptionServiceInterface;
 
 class UserService implements UserServiceInterface
@@ -142,7 +143,36 @@ class UserService implements UserServiceInterface
     }
 
 
-    public function login($username, $password): bool {
-        return true;
+    public function login($username, $password): bool
+    {
+        $query = "SELECT 
+                        id, password
+                    FROM 
+                        people 
+                    WHERE 
+                        nickname = ?";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->execute(
+            [
+                $username
+            ]
+            );
+
+        /** @var User $user */
+        $user = $stmt->fetchObject(User::class);
+
+        if (!$user) {
+            return false;
+        }
+
+        $passwordHash = $user->getPassword();
+
+        if ($this->encryptionService->isValid($passwordHash, $password)) {
+            $_SESSION['user_id'] = $user->getId();
+            return true;
+        }
+        
+        return false;
     }
 }
