@@ -14,17 +14,7 @@
             <div class="collapse navbar-collapse" id="navbarColor01">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item active">
-                    <a class="nav-link" href="#">Home
-                    </a>
-                    </li>
-                    <li class="nav-item">
-                    <a class="nav-link" href="#">Profile</a>
-                    </li>
-                    <li class="nav-item">
-                    <a class="nav-link" href="#">Users</a>
-                    </li>
-                    <li class="nav-item">
-                    <a class="nav-link" href="#">Messages</a>
+                        <a class="nav-link" href="#">Home</a>
                     </li>
                 </ul>
             </div>
