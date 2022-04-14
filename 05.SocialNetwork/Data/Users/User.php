@@ -12,6 +12,7 @@ class User
 
     private $nickname;
 
+
     public function getId()
     {
         return $this->id;
