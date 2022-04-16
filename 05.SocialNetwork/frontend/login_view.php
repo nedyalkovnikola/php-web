@@ -1,3 +1,4 @@
+<?php /** @var $data \Data\Users\UserLoginViewData */ ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,6 +8,9 @@
 </head>
 <body>
     <div class="container">
+        <?php if($data->getError()) : ?>
+            <h3><?= $data->getError(); ?></h3>
+        <?php endif; ?>    
         <form method="post">
             <fieldset>
                 <legend>Login</legend>
