@@ -10,7 +10,7 @@ if(isset($_POST['login'])) {
     $password = $_POST['password'];
 
     if (!$userService->login($username, $password)) {
-        throw new Exception("Password mismatch");
+        throw new \Exceptions\LoginException("Password mismatch");
     }
 
     header("Location: profile.php");
@@ -18,4 +18,11 @@ if(isset($_POST['login'])) {
 
 }
 
-$app->loadTemplate('login_view');
+$viewData = new \Data\Users\UserLoginViewData();
+if (isset($_SESSION['error'])) {
+    $error = $_SESSION['error'];
+    unset($_SESSION['error']);
+    $viewData = new \Data\Users\UserLoginViewData($error);
+}
+
+$app->loadTemplate('login_view', $viewData);
