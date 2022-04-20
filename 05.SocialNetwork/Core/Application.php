@@ -12,4 +12,13 @@ class Application
     {
         include self::FRONTEND_FOLDER . '/' . $templateName . '.php';
     }
+
+    public function checkLogin()
+    {
+        if (!isset($_SESSION['user_id'])) {
+            header("Location: login.php");
+            exit;
+        }
+
+    }
 }
