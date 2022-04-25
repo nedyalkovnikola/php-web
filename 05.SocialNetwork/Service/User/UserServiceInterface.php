@@ -4,6 +4,8 @@
 namespace Service\User;
 
 use Data\Users\UserRegisterViewData;
+use Data\Users\AllUsersViewData;
+use Data\Users\User;
 
 interface UserServiceInterface
 {
@@ -25,5 +27,14 @@ interface UserServiceInterface
 
 
     public function login($username, $password): bool;
+
+    /**
+     * @return AllUsersViewData
+     */
+    public function findAll(): AllUsersViewData;
+
+    public function findByFilter($gender, $country, $city, $minAge, $maxAge): AllUsersViewData;
+
+    public function findOne($id): User;
 }
 

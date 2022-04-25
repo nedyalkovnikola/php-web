@@ -8,9 +8,12 @@ use Adapter\DatabaseInterface;
 use Data\Cities\City;
 use Data\Countries\Country;
 use Data\Genders\Gender;
+use Data\Users\AllUsersViewData;
 use Data\Users\UserRegisterViewData;
 use Data\Users\User;
+use Data\Users\UserViewData;
 use Service\Encryption\EncryptionServiceInterface;
+use Service\Message\MessageService;
 
 class UserService implements UserServiceInterface
 {
@@ -85,14 +88,14 @@ class UserService implements UserServiceInterface
                             string $pictureUrl = null)
     {
         if ($password != $confirmPassword) {
-            throw new \Exception("Password mismatch");
+            throw new \Exceptions\RegisterException("Password mismatch");
         }
 
         $passwordHash = $this->encryptionService->encrypt($password);
 
         $interval = $birthday->diff(new \DateTime('now'));
         if ($interval->y < self::MIN_AGE_ALLOWED) {
-            throw new \Exception("Underage not allowed");
+            throw new \Exceptions\RegisterException("Underage not allowed");
         }
 
         $query = "INSERT INTO people (
@@ -174,5 +177,154 @@ class UserService implements UserServiceInterface
         }
         
         return false;
+    }
+
+    /**
+     * @return AllUsersViewData
+     */
+    public function findAll(): AllUsersViewData
+    {
+        return $this->find();
+    }
+
+    public function findByFilter($gender, $country, $city, $minAge, $maxAge): AllUsersViewData
+    {
+        $where = "";
+        $params = [];
+        $where = " WHERE (YEAR(NOW()) - YEAR(people.born_on)) BETWEEN ? AND ?";
+        $params[] = $minAge;
+        $params[] = $maxAge;
+
+        if ($gender > 0) {
+            $where .= " AND people.gender_id = ?";
+            $params[] = $gender;
+        }
+
+        if ($country > 0) {
+            $where .= " AND people.country_id = ?";
+            $params[] = $country;
+        }
+
+        if ($city > 0) {
+            $where .= " AND people.city_id = ?";
+            $params[] = $city;
+        }
+
+        return $this->find($where, $params);
+    }
+
+
+    public function findOne($id): User
+    {
+        $query = "SELECT
+                    people.id,
+                    people.first_name AS firstName,
+                    people.last_name AS lastName,
+                    people.nickname,
+                    people.email,
+                    people.phone,
+                    DATE_FORMAT(people.born_on, '%Y-%m-%d') AS bornOn,
+                    genders.name AS gender,
+                    countries.name AS country,
+                    cities.name AS city,
+                    people.picture,
+                    people.description
+                FROM
+                    people
+                INNER JOIN
+                    genders
+                ON
+                    people.gender_id = genders.id
+                INNER JOIN
+                    countries
+                ON
+                    people.country_id = countries.id
+                INNER JOIN
+                    cities
+                ON
+                    people.city_id = cities.id
+                WHERE
+                    people.id = ?";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->execute([$id]);
+
+        /** @var User $user */
+        $user = $stmt->fetchObject(User::class);
+        if (!$user->getPicture()) {
+            $user->setPicture(dirname($_SERVER['PHP_SELF']) . '/avatars/no-avatar.jpg');
+        }
+
+        $messageService = new MessageService($this->db);
+        $user->setUnreadMessages($messageService->getNewMessages($id));
+        $user->setAllMessages($messageService->getAllMessages($id));
+
+        return $user;
+    }
+
+    private function find ($where = null, $params = [])
+    {
+        $query = "SELECT
+                    people.id,
+                    people.first_name AS firstName,
+                    people.last_name AS lastName,
+                    people.nickname,
+                    people.email,
+                    people.phone,
+                    DATE_FORMAT(people.born_on, '%Y-%m-%d') AS bornOn,
+                    genders.name AS gender,
+                    countries.name AS country,
+                    cities.name AS city,
+                    people.picture
+                FROM
+                    people
+                INNER JOIN
+                    genders
+                ON
+                    people.gender_id = genders.id
+                INNER JOIN
+                    countries
+                ON
+                    people.country_id = countries.id
+                INNER JOIN
+                    cities
+                ON
+                    people.city_id = cities.id";
+
+
+        if ($where) {
+            $query .= $where;
+        }
+
+        $stmt = $this->db->prepare($query);
+        $stmt->execute($params);
+
+        $yearsStmt = $this->db->prepare("SELECT (YEAR(NOW()) - YEAR(born_on)) AS years
+                FROM people
+                ORDER BY born_on ASC
+                LIMIT 1");
+
+        $yearsStmt->execute();
+        $years = $yearsStmt->fetchRow()['years'];
+
+        $allUsers = new AllUsersViewData();
+        $allUsers->setMinYears(self::MIN_AGE_ALLOWED);
+        $allUsers->setMaxYears($years);
+        $allUsers->setAdditionalData($this->getRegisterViewData());
+
+        $lazyLoadedAllUsers = function() use ($stmt) 
+        {
+            /** @var UserViewData $user  */
+            while ($user = $stmt->fetchObject(UserViewData:: class)) {
+                if (!$user->getPicture()) {
+                    $user->setPicture(dirname($_SERVER['PHP_SELF']) . '/avatars/no-avatar.jpg');
+                }
+                yield $user;
+            }
+        };
+
+        $allUsers->setUsers($lazyLoadedAllUsers);
+
+        return $allUsers;
     }
 }
