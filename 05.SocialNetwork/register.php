@@ -10,6 +10,7 @@ if (isset($_POST['register'])) {
 
     $avatarUrl = null;
     if ($_FILES['avatar']['error'] === 0) {
+
         $avatarUrl = $uploadService->upload(
             $_FILES['avatar'], 
             'avatars'

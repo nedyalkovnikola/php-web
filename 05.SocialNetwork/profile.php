@@ -1,10 +1,9 @@
 <?php
 require_once 'app.php';
+$app->checkLogin();
 
-if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
-    exit;
-    throw new Exception("This page is restricted to logged in users");
-}
+$userService = new \Service\User\UserService($db, $encryptionService);
 
-$app->loadTemplate('profile_view');
+$currentUser = $userService->findOne($_SESSION['user_id']);
+
+$app->loadTemplate('profile_view', $currentUser);
