@@ -35,5 +35,7 @@
                 </div>
             </fieldset>
         </form>
+        <br>
+        <a href="register.php">Or register here</a>
     </div>
 </body>

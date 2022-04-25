@@ -11,13 +11,6 @@
     <nav class="navbar navbar-expand navbar-dark bg-primary">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">Social App</a>
-            <div class="collapse navbar-collapse" id="navbarColor01">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="#">Home</a>
-                    </li>
-                </ul>
-            </div>
         </div>
     </nav>
     <br>
