@@ -3,13 +3,10 @@
 
 namespace Data\Users;
 
-use Data\Message\MessagesViewData;
 
-class User
+class UserViewData
 {
     private $id;
-
-    private $password;
 
     private $firstName;
 
@@ -31,26 +28,9 @@ class User
 
     private $picture;
 
-    private $description;
-
-    /**
-     * @var MessagesViewData
-     */
-    private $unreadMessages;
-
-    /**
-     * @var MessagesViewData
-     */
-    private $allMessages;
-
     public function getId()
     {
         return $this->id;
-    }
-
-    public function getPassword()
-    {
-        return $this->password;
     }
 
     public function getFirstName()
@@ -103,36 +83,11 @@ class User
         return $this->picture;
     }
 
-    public function getDescription()
-    {
-        return $this->description;
-    }
-
     /**
      * @param mixed $picture
      */
     public function setPicture($picture)
     {
         $this->picture = $picture;
-    }
-
-    public function getUnreadMessages()
-    {
-        return $this->unreadMessages;
-    }
-
-    public function setUnreadMessages(MessagesViewData $unreadMessages)
-    {
-        $this->unreadMessages = $unreadMessages;
-    }
-
-    public function getAllMessages()
-    {
-        return $this->allMessages;
-    }
-
-    public function setAllMessages(MessagesViewData $allMessages)
-    {
-        $this->allMessages = $allMessages;
     }
 }
