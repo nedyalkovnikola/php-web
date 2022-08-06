@@ -1,5 +1,4 @@
-
-Social network site with basic CRUD operations.
+## Social network site with basic CRUD operations.
 1. Registration form
 2. Login
 3. Profile page
